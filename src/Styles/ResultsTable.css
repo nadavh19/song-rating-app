@@ -1,0 +1,91 @@
+/* File: src/Styles/ResultsTable.css */
+
+/* Container background & centering */
+.results-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a148c, #8e24aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Raleway', sans-serif;
+  padding: 20px;
+}
+
+/* The “card” that holds everything */
+.results-card {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+/* Section headings */
+.title-results,
+.section-title {
+  font-family: 'Pacifico', cursive;
+  color: #8e24aa;
+}
+
+/* Info block styling */
+.results-info p {
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Custom table styling */
+.results-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Gradient header */
+.results-table thead {
+  background: linear-gradient(135deg, #8e24aa, #4a148c);
+}
+
+.results-table thead th {
+  color: #fff;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Body rows */
+.results-table tbody tr {
+  background: #fafafa;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.results-table tbody tr:nth-child(even) {
+  background: #fff;
+}
+
+.results-table tbody td {
+  padding: 12px 16px;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* Hover effect */
+.results-table tbody tr:hover {
+  background: #f0e6f8;
+  transform: translateX(4px);
+}
+
+/* Reset button */
+.btn-danger {
+  background-color: #c0392b !important;
+  border: none;
+  color: white !important;
+}
+
+.btn-danger:hover {
+  background-color: #922b21 !important;
+}

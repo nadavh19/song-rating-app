@@ -1,0 +1,59 @@
+/* File: src/Styles/SongRatingScreen.css */
+.rating-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a148c, #8e24aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Raleway', sans-serif;
+  padding: 20px;
+}
+
+.rating-card {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.title-music {
+  font-family: 'Pacifico', cursive;
+  color: #8e24aa;
+}
+
+.btn.btn-purple {
+  background-color: #8e44ad !important;
+  color: white !important;
+  border: none;
+}
+
+.btn.btn-purple:hover {
+  background-color: #732d91 !important;
+}
+
+.rating-card-tile {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.rating-card-tile:hover {
+  transform: scale(1.05);
+}
+
+.rated {
+  border-left: 4px solid #4caf50;
+}
+
+.skipped {
+  border-left: 4px solid #757575;
+  opacity: 0.8;
+  font-style: italic;
+}

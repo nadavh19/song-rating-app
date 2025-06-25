@@ -1,0 +1,54 @@
+.userform-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a148c, #8e24aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Raleway', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+.userform-bg::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: pulseWave 10s linear infinite;
+  z-index: 0;
+}
+
+@keyframes pulseWave {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.userform-card {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+}
+
+
+.title-music {
+  font-family: 'Pacifico', cursive;
+  color: #2a5298;
+}
+.btn.btn-purple {
+  background-color: #8e44ad;
+  border: none;
+  color: white; /* ← This line makes the text white */
+}
+
+.btn.btn-purple:hover {
+  background-color: #732d91;
+  color: white; /* Keep it white on hover too */
+}
