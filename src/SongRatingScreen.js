@@ -1,9 +1,8 @@
-// File: src/Styles/SongRatingScreen.js
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './Styles/SongRatingScreen.css';
 
-function SongRatingScreen({ user, onFinish }) {
+function SongRatingScreen({ userName, albumName, bandName, onFinish }) {
   const [songName, setSongName] = useState('');
   const [rating, setRating] = useState('');
   const [ratingsList, setRatingsList] = useState([]);
@@ -47,7 +46,7 @@ function SongRatingScreen({ user, onFinish }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          🎶 Rate songs for <strong>{user.album}</strong> by <strong>{user.band}</strong>
+          🎶 {userName}, rate songs for <strong>{albumName}</strong> by <strong>{bandName}</strong>
         </motion.h2>
 
         <motion.div

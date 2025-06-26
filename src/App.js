@@ -11,9 +11,31 @@ function App() {
   const [userGroup, setUserGroup] = useState([]);
   const [currentUserIndex, setCurrentUserIndex] = useState(0);
 
+  // Shared album info from first user
+  const [sharedAlbumName, setSharedAlbumName] = useState('');
+  const [sharedBandName, setSharedBandName] = useState('');
+
+  // Before submitting the form, we check:
+  const isFirstUserBeingAdded = userGroup.length === 0;
+
+
   // Step 0: After user fills form
   const handleUserSubmit = (userData) => {
-    const newEntry = { user: userData, ratings: [] };
+    // If this is the first user, store album and band globally
+    if (isFirstUserBeingAdded) {
+      setSharedAlbumName(userData.albumName);
+      setSharedBandName(userData.bandName);
+    }
+
+
+    const newEntry = {
+      user: {
+        userName: userData.userName,
+        albumName: sharedAlbumName || userData.albumName,
+        bandName: sharedBandName || userData.bandName
+      },
+      ratings: []
+    };
     setUserGroup((prev) => [...prev, newEntry]);
     setCurrentUserIndex(userGroup.length); // index of newly added user
     setStep(1); // go to rating screen
@@ -36,17 +58,27 @@ function App() {
   const handleReset = () => {
     setUserGroup([]);
     setCurrentUserIndex(0);
+    setSharedAlbumName('');
+    setSharedBandName('');
     setStep(0);
   };
 
   return (
     <div className="app-container">
       {step === 0 && (
-        <UserForm onSubmit={handleUserSubmit} />
+        <UserForm
+          onSubmit={handleUserSubmit}
+          isFirstUserBeingAdded={isFirstUserBeingAdded}
+          sharedAlbumName={sharedAlbumName}
+          sharedBandName={sharedBandName}
+        />
+
       )}
       {step === 1 && (
         <SongRatingScreen
-          user={userGroup[currentUserIndex].user}
+          userName={userGroup[currentUserIndex].user.userName}
+          albumName={sharedAlbumName}
+          bandName={sharedBandName}
           onFinish={handleRatingsFinish}
         />
       )}
@@ -59,9 +91,12 @@ function App() {
       {step === 3 && (
         <GroupResultsSummary
           userGroup={userGroup}
+          sharedAlbumName={sharedAlbumName}
+          sharedBandName={sharedBandName}
           onReset={handleReset}
-          setStep={setStep} // to allow moving to comparison
+          setStep={setStep}
         />
+
       )}
       {step === 4 && (
         <SongComparisonTable

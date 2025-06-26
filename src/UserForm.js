@@ -1,9 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import './Styles/UserForm.css';
- 
 
-function UserForm({ onSubmit }) {
+function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBandName }) {
   const [userData, setUserData] = React.useState({
     userName: '',
     album: '',
@@ -18,8 +17,19 @@ function UserForm({ onSubmit }) {
   };
 
   const handleSubmit = () => {
-    onSubmit(userData);
+    const album = isFirstUserBeingAdded ? userData.album : sharedAlbumName;
+    const band = isFirstUserBeingAdded ? userData.band : sharedBandName;
+
+    onSubmit({
+      userName: userData.userName.trim(),
+      albumName: album.trim(),
+      bandName: band.trim()
+    });
   };
+
+  const nameFilled = userData.userName.trim() !== '';
+  const albumFilled = userData.album.trim() !== '';
+  const bandFilled = userData.band.trim() !== '';
 
   return (
     <div className="userform-bg">
@@ -55,8 +65,8 @@ function UserForm({ onSubmit }) {
           />
         </motion.div>
 
-        {/* Album Input */}
-        {userData.userName.trim() !== '' && (
+        {/* Album Input (only for first user) */}
+        {isFirstUserBeingAdded && nameFilled && (
           <motion.div
             className="mb-3"
             initial={{ opacity: 0, x: -50 }}
@@ -74,8 +84,8 @@ function UserForm({ onSubmit }) {
           </motion.div>
         )}
 
-        {/* Band Input */}
-        {userData.album.trim() !== '' && (
+        {/* Band Input (only for first user) */}
+        {isFirstUserBeingAdded && albumFilled && (
           <motion.div
             className="mb-3"
             initial={{ opacity: 0, x: -50 }}
@@ -93,18 +103,26 @@ function UserForm({ onSubmit }) {
           </motion.div>
         )}
 
-        {/* Submit Button */}
-        {userData.band.trim() !== '' && (
-          <motion.button
-            className="btn btn-purple w-100 mt-3"
-            onClick={handleSubmit}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            Start Rating
-          </motion.button>
-        )}
+        {/* Start Button logic — adjusted for first vs other users */}
+        {/* Start Button logic — FIXED */}
+        {(
+          (isFirstUserBeingAdded &&
+            nameFilled &&
+            albumFilled &&
+            bandFilled) ||
+          (!isFirstUserBeingAdded && nameFilled)
+        ) && (
+            <motion.button
+              className="btn btn-purple w-100 mt-3"
+              onClick={handleSubmit}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              Start Rating
+            </motion.button>
+          )}
+
       </motion.div>
     </div>
   );

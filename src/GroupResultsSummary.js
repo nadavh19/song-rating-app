@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './Styles/GroupResultsSummary.css';
 
-function GroupResultsSummary({ userGroup, onReset, setStep }) {
+function GroupResultsSummary({ userGroup, sharedAlbumName, sharedBandName, onReset, setStep }) {
   const getStats = (ratings) => {
     const rated = ratings.filter(r => r.rating !== null);
     if (rated.length === 0) return {
@@ -42,6 +42,7 @@ function GroupResultsSummary({ userGroup, onReset, setStep }) {
               <tr>
                 <th>User</th>
                 <th>Album</th>
+                <th>Band</th>
                 <th>Total</th>
                 <th>Average</th>
                 <th>Lowest</th>
@@ -59,7 +60,8 @@ function GroupResultsSummary({ userGroup, onReset, setStep }) {
                     transition={{ delay: 0.1 * index }}
                   >
                     <td>{entry.user.userName}</td>
-                    <td>{entry.user.album}</td>
+                    <td>{sharedAlbumName}</td>
+                    <td>{sharedBandName}</td>
                     <td>{stats.total}</td>
                     <td>{stats.avg}</td>
                     <td>
