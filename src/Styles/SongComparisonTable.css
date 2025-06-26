@@ -1,0 +1,32 @@
+.comparison-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a148c, #8e24aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Raleway', sans-serif;
+  padding: 20px;
+}
+
+.comparison-card {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.title-music {
+  font-family: 'Pacifico', cursive;
+  color: #8e24aa;
+}
+
+.btn.btn-purple {
+  background-color: #8e44ad !important;
+  color: white !important;
+  border: none;
+}
+
+.btn.btn-purple:hover {
+  background-color: #732d91 !important;
+}
