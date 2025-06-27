@@ -17,7 +17,8 @@ function App() {
 
   // Before submitting the form, we check:
   const isFirstUserBeingAdded = userGroup.length === 0;
-
+  
+  
 
   // Step 0: After user fills form
   const handleUserSubmit = (userData) => {
