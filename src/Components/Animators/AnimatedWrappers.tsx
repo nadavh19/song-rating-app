@@ -1,11 +1,36 @@
-// components/AnimatedWrappers.js
+// components/AnimatedWrappers.tsx
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
+
+// Shared props for all motion.div-based components
+type MotionDivProps = {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+  className?: string;
+};
+
+// Props for motion.button-based components
+type AnimatedButtonProps = HTMLMotionProps<'button'> & {
+  children: React.ReactNode;
+  className?: string;
+};
+
+// Extended props for buttons that support a `delay`
+type AnimatedButtonScaleInProps = AnimatedButtonProps & {
+  delay?: number;
+};
+
+// Props for table rows
+type MotionRowProps = {
+  children: React.ReactNode;
+  delay?: number;
+};
 
 /**
  * Fade in and slide upward (used for background or entrance)
  */
-export function FadeInUp({ children, delay = 0, duration = 0.6, className = "" }) {
+export function FadeInUp({ children, delay = 0, duration = 0.6, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -21,7 +46,7 @@ export function FadeInUp({ children, delay = 0, duration = 0.6, className = "" }
 /**
  * Simple fade in (used for text blocks)
  */
-export function FadeIn({ children, delay = 0.2, className = "" }) {
+export function FadeIn({ children, delay = 0.2, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -37,10 +62,7 @@ export function FadeIn({ children, delay = 0.2, className = "" }) {
 /**
  * Table row fade in with upward slide (used in GroupResultsSummary)
  */
-/**
- * Animated <tr> wrapper for table rows that need to preserve Bootstrap hover
- */
-export function AnimatedRow({ children, delay = 0 }) {
+export function AnimatedRow({ children, delay = 0 }: MotionRowProps) {
   return (
     <motion.tr
       initial={{ opacity: 0, y: 10 }}
@@ -55,7 +77,7 @@ export function AnimatedRow({ children, delay = 0 }) {
 /**
  * Fade in from above (used for centered card drop effect)
  */
-export function FadeInDrop({ children, duration = 0.8, className = "" }) {
+export function FadeInDrop({ children, duration = 0.8, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -71,7 +93,7 @@ export function FadeInDrop({ children, duration = 0.8, className = "" }) {
 /**
  * Slide in from the left (used for input fields)
  */
-export function FadeInXLeft({ children, delay = 0, className = "" }) {
+export function FadeInXLeft({ children, delay = 0, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -87,7 +109,7 @@ export function FadeInXLeft({ children, delay = 0, className = "" }) {
 /**
  * Slide in from the right (used for rating input)
  */
-export function FadeInRight({ children, delay = 0, className = "" }) {
+export function FadeInRight({ children, delay = 0, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -103,7 +125,7 @@ export function FadeInRight({ children, delay = 0, className = "" }) {
 /**
  * Fade in + scale (used for rating cards or major transitions)
  */
-export function FadeInScale({ children, delay = 0.1, className = "" }) {
+export function FadeInScale({ children, delay = 0.1, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -119,7 +141,7 @@ export function FadeInScale({ children, delay = 0.1, className = "" }) {
 /**
  * Simple text fade-in (used for headers)
  */
-export function FadeInText({ children, delay = 0.3, className = "" }) {
+export function FadeInText({ children, delay = 0.3, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}
@@ -135,11 +157,14 @@ export function FadeInText({ children, delay = 0.3, className = "" }) {
 /**
  * Basic button with hover/tap animations
  */
-export function AnimatedButton({ children, onClick, className = "", ...rest }) {
+export function AnimatedButton({
+  children,
+  className = '',
+  ...rest
+}: AnimatedButtonProps) {
   return (
     <motion.button
       className={className}
-      onClick={onClick}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 300 }}
@@ -153,16 +178,21 @@ export function AnimatedButton({ children, onClick, className = "", ...rest }) {
 /**
  * Button that fades/scales in and supports hover/tap
  */
-export function AnimatedButtonScaleIn({ children, onClick, className = "", delay = 0.6 }) {
+export function AnimatedButtonScaleIn({
+  children,
+  className = '',
+  delay = 0.6,
+  ...rest
+}: AnimatedButtonScaleInProps) {
   return (
     <motion.button
       className={className}
-      onClick={onClick}
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay, type: 'spring', stiffness: 200 }}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
+      {...rest}
     >
       {children}
     </motion.button>
@@ -172,7 +202,7 @@ export function AnimatedButtonScaleIn({ children, onClick, className = "", delay
 /**
  * For individual rating tiles (fade in with stagger)
  */
-export function StaggeredFadeTile({ children, delay = 0, className = "" }) {
+export function StaggeredFadeTile({ children, delay = 0, className = '' }: MotionDivProps) {
   return (
     <motion.div
       className={className}

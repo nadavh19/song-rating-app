@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import '../Styles/UserForm.css';
 import {
   FadeInDrop,
@@ -7,14 +7,32 @@ import {
   AnimatedButton
 } from './Animators/AnimatedWrappers';
 
-function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBandName }) {
-  const [userData, setUserData] = React.useState({
+// === Props Type ===
+type UserFormProps = {
+  onSubmit: (data: {
+    userName: string;
+    albumName: string;
+    bandName: string;
+  }) => void;
+  isFirstUserBeingAdded: boolean;
+  sharedAlbumName: string;
+  sharedBandName: string;
+};
+///////////////////////
+
+function UserForm({
+  onSubmit,
+  isFirstUserBeingAdded,
+  sharedAlbumName,
+  sharedBandName
+}: UserFormProps) {
+  const [userData, setUserData] = useState({
     userName: '',
     album: '',
     band: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserData({
       ...userData,
       [e.target.name]: e.target.value
@@ -83,13 +101,9 @@ function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBand
           </FadeInXLeft>
         )}
 
-        {(
-          (isFirstUserBeingAdded &&
-            nameFilled &&
-            albumFilled &&
-            bandFilled) ||
-          (!isFirstUserBeingAdded && nameFilled)
-        ) && (
+        {(isFirstUserBeingAdded
+          ? nameFilled && albumFilled && bandFilled
+          : nameFilled) && (
           <AnimatedButton
             className="btn btn-purple w-100 mt-3"
             onClick={handleSubmit}

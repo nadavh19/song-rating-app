@@ -2,9 +2,34 @@ import React from 'react';
 import '../Styles/SongComparisonTable.css';
 import * as MotionWrap from './Animators/AnimatedWrappers';
 
-function SongComparisonTable({ userGroup, onBack }) {
-  // Step 1: Get all unique song names from all users
-  const allSongNames = new Set();
+// 🧠 A single rating: song name + number or null (if skipped)
+type Rating = {
+  songName: string ;
+  rating: number | null;
+};
+
+// 🧠 Each user object includes their name, album, band
+type User = {
+  userName: string;
+  albumName: string;
+  bandName: string;
+};
+
+// 🧠 Full data per user = user + their list of ratings
+type UserGroupEntry = {
+  user: User;
+  ratings: Rating[];
+};
+
+// 🧠 Props the component receives
+type SongComparisonTableProps = {
+  userGroup: UserGroupEntry[];
+  onBack: () => void;
+};
+
+function SongComparisonTable({ userGroup, onBack }: SongComparisonTableProps) {
+  // Step 1: Collect all unique song names from all users
+  const allSongNames = new Set<string>();
   userGroup.forEach(({ ratings }) => {
     ratings.forEach(({ songName }) => {
       if (songName && songName.trim() !== '') {
@@ -16,7 +41,7 @@ function SongComparisonTable({ userGroup, onBack }) {
   const uniqueSongs = Array.from(allSongNames);
 
   return (
-    <MotionWrap.FadeIn className="comparison-bg" duration={0.6}>
+    <MotionWrap.FadeIn className="comparison-bg">
       <MotionWrap.FadeInScale className="comparison-card shadow p-4">
         <h2 className="text-center title-music mb-4">🎵 Song-by-Song Ratings</h2>
 
@@ -32,7 +57,6 @@ function SongComparisonTable({ userGroup, onBack }) {
             </thead>
             <tbody>
               {uniqueSongs.map((song, i) => (
-                // ⬇️ We use regular <tr> here to preserve Bootstrap .table-hover
                 <tr key={i}>
                   <td>{song}</td>
                   {userGroup.map((u, j) => {

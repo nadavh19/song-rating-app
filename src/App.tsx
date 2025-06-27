@@ -5,57 +5,69 @@ import AddAnotherUserScreen from './Components/AddAnotherUserScreen';
 import GroupResultsSummary from './Components/GroupResultsSummary';
 import SongComparisonTable from './Components/SongComparisonTable';
 
+// === Type Definitions ===
+type Rating = {
+  songName: string;
+  rating: number | null;
+};
+
+type User = {
+  userName: string;
+  albumName: string;
+  bandName: string;
+};
+
+type UserGroupEntry = {
+  user: User;
+  ratings: Rating[];
+};
+
+type UserFormData = {
+  userName: string;
+  albumName: string;
+  bandName: string;
+};
+
 function App() {
-  // App-wide states
-  const [step, setStep] = useState(0); // Step 0: form, 1: rating, 2: add another, 3: summary, 4: comparison
-  const [userGroup, setUserGroup] = useState([]);
-  const [currentUserIndex, setCurrentUserIndex] = useState(0);
+  const [step, setStep] = useState<number>(0);
+  const [userGroup, setUserGroup] = useState<UserGroupEntry[]>([]);
+  const [currentUserIndex, setCurrentUserIndex] = useState<number>(0);
+  const [sharedAlbumName, setSharedAlbumName] = useState<string>('');
+  const [sharedBandName, setSharedBandName] = useState<string>('');
 
-  // Shared album info from first user
-  const [sharedAlbumName, setSharedAlbumName] = useState('');
-  const [sharedBandName, setSharedBandName] = useState('');
-
-  // Before submitting the form, we check:
   const isFirstUserBeingAdded = userGroup.length === 0;
-  
-  
 
-  // Step 0: After user fills form
-  const handleUserSubmit = (userData) => {
-    // If this is the first user, store album and band globally
+  const handleUserSubmit = (userData: UserFormData) => {
     if (isFirstUserBeingAdded) {
       setSharedAlbumName(userData.albumName);
       setSharedBandName(userData.bandName);
     }
 
-
-    const newEntry = {
+    const newEntry: UserGroupEntry = {
       user: {
         userName: userData.userName,
         albumName: sharedAlbumName || userData.albumName,
-        bandName: sharedBandName || userData.bandName
+        bandName: sharedBandName || userData.bandName,
       },
-      ratings: []
+      ratings: [],
     };
+
     setUserGroup((prev) => [...prev, newEntry]);
-    setCurrentUserIndex(userGroup.length); // index of newly added user
-    setStep(1); // go to rating screen
+    setCurrentUserIndex(userGroup.length);
+    setStep(1);
   };
 
-  // Step 1: After user finishes rating
-  const handleRatingsFinish = (ratingsList) => {
+  const handleRatingsFinish = (ratingsList: Rating[]) => {
     const updatedGroup = [...userGroup];
     updatedGroup[currentUserIndex].ratings = ratingsList;
     setUserGroup(updatedGroup);
-    setStep(2); // go to "add another user" screen
+    setStep(2);
   };
 
-  // Step 2: After user chooses to finish or add another
   const handleFinishGroup = () => {
-    setStep(3); // show results summary
+    setStep(3);
   };
 
-  // Restart the app
   const handleReset = () => {
     setUserGroup([]);
     setCurrentUserIndex(0);
@@ -73,8 +85,8 @@ function App() {
           sharedAlbumName={sharedAlbumName}
           sharedBandName={sharedBandName}
         />
-
       )}
+
       {step === 1 && (
         <SongRatingScreen
           userName={userGroup[currentUserIndex].user.userName}
@@ -83,12 +95,14 @@ function App() {
           onFinish={handleRatingsFinish}
         />
       )}
+
       {step === 2 && (
         <AddAnotherUserScreen
           onAddAnother={() => setStep(0)}
           onFinishGroup={handleFinishGroup}
         />
       )}
+
       {step === 3 && (
         <GroupResultsSummary
           userGroup={userGroup}
@@ -97,8 +111,8 @@ function App() {
           onReset={handleReset}
           setStep={setStep}
         />
-
       )}
+
       {step === 4 && (
         <SongComparisonTable
           userGroup={userGroup}

@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import '../Styles/SongRatingScreen.css';
 import * as MotionWrap from './Animators/AnimatedWrappers';
 
-function SongRatingScreen({ userName, albumName, bandName, onFinish }) {
+// ✅ 1. Define the types of the component props
+type SongRatingScreenProps = {
+  userName: string;
+  albumName: string;
+  bandName: string;
+  onFinish: (ratings: Rating[]) => void;
+};
+
+// ✅ 2. Define the type of a single rating entry
+type Rating = {
+  songName: string;
+  rating: number | null;
+};
+
+function SongRatingScreen({
+  userName,
+  albumName,
+  bandName,
+  onFinish,
+}: SongRatingScreenProps) {
+  // ✅ 3. Type local state: we rely on inference where possible
   const [songName, setSongName] = useState('');
   const [rating, setRating] = useState('');
-  const [ratingsList, setRatingsList] = useState([]);
+  const [ratingsList, setRatingsList] = useState<Rating[]>([]); // explicitly say it's a list of Rating objects
 
+  // ✅ 4. Add rating to list
   const handleAddRating = () => {
     const ratingValue = rating === '' ? null : parseInt(rating, 10);
     setRatingsList([...ratingsList, { songName, rating: ratingValue }]);
@@ -14,16 +35,19 @@ function SongRatingScreen({ userName, albumName, bandName, onFinish }) {
     setRating('');
   };
 
+  // ✅ 5. Skip a song (rating is null)
   const handleSkip = () => {
     setRatingsList([...ratingsList, { songName, rating: null }]);
     setSongName('');
     setRating('');
   };
 
+  // ✅ 6. Finish the session and return the ratings
   const handleFinish = () => {
     onFinish(ratingsList);
   };
 
+  // ✅ 7. Input validation pattern (no need to type regex)
   const ratingPattern = /^[1-9]$|^10$/;
   const isValidRating = ratingPattern.test(rating);
 
@@ -36,13 +60,14 @@ function SongRatingScreen({ userName, albumName, bandName, onFinish }) {
           </h2>
         </MotionWrap.FadeInText>
 
+        {/* ✅ Typed input change events */}
         <MotionWrap.FadeInXLeft className="mb-3" delay={0.3}>
           <label className="form-label">Song Name</label>
           <input
             className="form-control"
             placeholder="Enter song name"
             value={songName}
-            onChange={(e) => setSongName(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSongName(e.target.value)}
           />
         </MotionWrap.FadeInXLeft>
 
@@ -56,7 +81,7 @@ function SongRatingScreen({ userName, albumName, bandName, onFinish }) {
             step="1"
             placeholder="Rating"
             value={rating}
-            onChange={(e) => setRating(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setRating(e.target.value)}
           />
         </MotionWrap.FadeInRight>
 

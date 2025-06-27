@@ -3,7 +3,17 @@ import React from 'react';
 import '../Styles/AddAnotherUserScreen.css';
 import * as MotionWrap from './Animators/AnimatedWrappers';
 
-function AddAnotherUserScreen({ onAddAnother, onFinishGroup }) {
+
+type AddAnotherUserScreenProps =  {
+  onAddAnother: () => void
+  onFinishGroup: () => void
+
+};
+
+function AddAnotherUserScreen(
+  { onAddAnother,
+    onFinishGroup
+  }: AddAnotherUserScreenProps) {
   return (
     <div className="adduser-bg d-flex align-items-center justify-content-center">
       <MotionWrap.FadeInScale className="adduser-card shadow p-4 text-center">

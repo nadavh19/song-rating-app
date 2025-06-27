@@ -6,9 +6,47 @@ import {
   AnimatedButton
 } from './Animators/AnimatedWrappers';
 
-function GroupResultsSummary({ userGroup, sharedAlbumName, sharedBandName, onReset, setStep }) {
-  const getStats = (ratings) => {
+// 🧠 Define what a single song rating looks like
+type Rating = {
+  songName: string;
+  rating: number | null;
+};
+
+// 🧠 Define what a single user looks like
+type User = {
+  userName: string;
+  albumName: string;
+  bandName: string;
+};
+
+// 🧠 Each user in the group has a user object + a list of song ratings
+type UserGroupEntry = {
+  user: User;
+  ratings: Rating[];
+};
+
+// 🧠 Props passed into this component
+type GroupResultsSummaryProps = {
+  userGroup: UserGroupEntry[];
+  sharedAlbumName: string;
+  sharedBandName: string;
+  onReset: () => void;
+  setStep: (step: number) => void;
+};
+
+function GroupResultsSummary({
+  userGroup,
+  sharedAlbumName,
+  sharedBandName,
+  onReset,
+  setStep,
+}: GroupResultsSummaryProps) {
+  // 🧠 This helper function takes a list of ratings and gives back stats
+  const getStats = (ratings: Rating[]) => {
+    // Keep only songs that were rated (not skipped)
     const rated = ratings.filter(r => r.rating !== null);
+
+    // If the user didn’t rate anything, return default values
     if (rated.length === 0) return {
       total: 0,
       avg: 'N/A',
@@ -16,10 +54,19 @@ function GroupResultsSummary({ userGroup, sharedAlbumName, sharedBandName, onRes
       max: null
     };
 
-    const total = rated.reduce((sum, r) => sum + r.rating, 0);
+    // Add all the rating numbers together
+    const total = rated.reduce((sum, r) => sum + (r.rating ?? 0), 0);
+
+    // Divide total by how many songs were rated (and round to 2 decimals)
     const avg = (total / rated.length).toFixed(2);
-    const min = rated.reduce((a, b) => a.rating < b.rating ? a : b);
-    const max = rated.reduce((a, b) => a.rating > b.rating ? a : b);
+
+    // Find the lowest-rated song
+    const min = rated.reduce((a, b) => (a.rating! < b.rating! ? a : b));
+
+    // Find the highest-rated song
+    const max = rated.reduce((a, b) => (a.rating! > b.rating! ? a : b));
+
+    // Return an object with stats
     return { total, avg, min, max };
   };
 
