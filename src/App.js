@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import UserForm from './UserForm';
-import SongRatingScreen from './SongRatingScreen';
-import AddAnotherUserScreen from './AddAnotherUserScreen';
-import GroupResultsSummary from './GroupResultsSummary';
-import SongComparisonTable from './SongComparisonTable';
+import UserForm from './Components/UserForm';
+import SongRatingScreen from './Components/SongRatingScreen';
+import AddAnotherUserScreen from './Components/AddAnotherUserScreen';
+import GroupResultsSummary from './Components/GroupResultsSummary';
+import SongComparisonTable from './Components/SongComparisonTable';
 
 function App() {
   // App-wide states

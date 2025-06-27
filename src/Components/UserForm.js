@@ -1,6 +1,11 @@
 import React from "react";
-import { motion } from "framer-motion";
-import './Styles/UserForm.css';
+import '../Styles/UserForm.css';
+import {
+  FadeInDrop,
+  FadeInXLeft,
+  FadeInText,
+  AnimatedButton
+} from './Animators/AnimatedWrappers';
 
 function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBandName }) {
   const [userData, setUserData] = React.useState({
@@ -33,28 +38,13 @@ function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBand
 
   return (
     <div className="userform-bg">
-      <motion.div
-        className="userform-card card shadow-lg p-4"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <motion.h2
-          className="text-center mb-4 title-music"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          🎵 Start Rating
-        </motion.h2>
+      <FadeInDrop className="userform-card card shadow-lg p-4">
+        <FadeInText className="text-center mb-4 title-music">
+          <h2>🎵 Start Rating</h2>
+        </FadeInText>
 
         {/* Name Input */}
-        <motion.div
-          className="mb-3"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
-        >
+        <FadeInXLeft className="mb-3" delay={0.6}>
           <label className="form-label">Your Name</label>
           <input
             name="userName"
@@ -63,16 +53,11 @@ function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBand
             value={userData.userName}
             onChange={handleChange}
           />
-        </motion.div>
+        </FadeInXLeft>
 
         {/* Album Input (only for first user) */}
         {isFirstUserBeingAdded && nameFilled && (
-          <motion.div
-            className="mb-3"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <FadeInXLeft className="mb-3" delay={0.2}>
             <label className="form-label">Album Name</label>
             <input
               name="album"
@@ -81,17 +66,12 @@ function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBand
               value={userData.album}
               onChange={handleChange}
             />
-          </motion.div>
+          </FadeInXLeft>
         )}
 
         {/* Band Input (only for first user) */}
         {isFirstUserBeingAdded && albumFilled && (
-          <motion.div
-            className="mb-3"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <FadeInXLeft className="mb-3" delay={0.2}>
             <label className="form-label">Band Name</label>
             <input
               name="band"
@@ -100,11 +80,9 @@ function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBand
               value={userData.band}
               onChange={handleChange}
             />
-          </motion.div>
+          </FadeInXLeft>
         )}
 
-        {/* Start Button logic — adjusted for first vs other users */}
-        {/* Start Button logic — FIXED */}
         {(
           (isFirstUserBeingAdded &&
             nameFilled &&
@@ -112,18 +90,14 @@ function UserForm({ onSubmit, isFirstUserBeingAdded, sharedAlbumName, sharedBand
             bandFilled) ||
           (!isFirstUserBeingAdded && nameFilled)
         ) && (
-            <motion.button
-              className="btn btn-purple w-100 mt-3"
-              onClick={handleSubmit}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              Start Rating
-            </motion.button>
-          )}
-
-      </motion.div>
+          <AnimatedButton
+            className="btn btn-purple w-100 mt-3"
+            onClick={handleSubmit}
+          >
+            Start Rating
+          </AnimatedButton>
+        )}
+      </FadeInDrop>
     </div>
   );
 }

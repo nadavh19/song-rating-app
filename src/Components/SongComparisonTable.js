@@ -1,6 +1,6 @@
 import React from 'react';
-import './Styles/SongComparisonTable.css';
-import { motion } from 'framer-motion';
+import '../Styles/SongComparisonTable.css';
+import * as MotionWrap from './Animators/AnimatedWrappers';
 
 function SongComparisonTable({ userGroup, onBack }) {
   // Step 1: Get all unique song names from all users
@@ -16,18 +16,8 @@ function SongComparisonTable({ userGroup, onBack }) {
   const uniqueSongs = Array.from(allSongNames);
 
   return (
-    <motion.div
-      className="comparison-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      <motion.div
-        className="comparison-card shadow p-4"
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.2, type: 'spring', stiffness: 140 }}
-      >
+    <MotionWrap.FadeIn className="comparison-bg" duration={0.6}>
+      <MotionWrap.FadeInScale className="comparison-card shadow p-4">
         <h2 className="text-center title-music mb-4">🎵 Song-by-Song Ratings</h2>
 
         <div className="table-responsive">
@@ -42,6 +32,7 @@ function SongComparisonTable({ userGroup, onBack }) {
             </thead>
             <tbody>
               {uniqueSongs.map((song, i) => (
+                // ⬇️ We use regular <tr> here to preserve Bootstrap .table-hover
                 <tr key={i}>
                   <td>{song}</td>
                   {userGroup.map((u, j) => {
@@ -62,14 +53,14 @@ function SongComparisonTable({ userGroup, onBack }) {
           </table>
         </div>
 
-        <button
+        <MotionWrap.AnimatedButton
           className="btn btn-purple mt-4"
           onClick={onBack}
         >
           ← Back to Summary
-        </button>
-      </motion.div>
-    </motion.div>
+        </MotionWrap.AnimatedButton>
+      </MotionWrap.FadeInScale>
+    </MotionWrap.FadeIn>
   );
 }
 
