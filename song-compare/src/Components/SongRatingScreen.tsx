@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect,useCallback } from 'react';
 import '../Styles/SongRatingScreen.css';
 import * as MotionWrap from './Animators/AnimatedWrappers';
 
@@ -30,12 +30,7 @@ function SongRatingScreen({
   const ratingPattern = /^[1-9]$|^10$/;
   const isValidRating = ratingPattern.test(rating);
 
-  // 🧠 Automatically finish when all songs are rated
-  useEffect(() => {
-    if (currentIndex >= songs.length) {
-      handleFinish();
-    }
-  }, [currentIndex]);
+  
 
   const handleAddRating = () => {
     const ratingValue = rating === '' ? null : parseInt(rating, 10);
@@ -50,14 +45,21 @@ function SongRatingScreen({
     setCurrentIndex(currentIndex + 1);
   };
 
-  const handleFinish = () => {
-    const remaining = songs.slice(currentIndex).map(song => ({
-      songName: song,
-      rating: null,
-    }));
-    const fullRatings = [...ratingsList, ...remaining];
-    onFinish(fullRatings);
-  };
+  const handleFinish = useCallback(() => {
+  const remaining = songs.slice(currentIndex).map(song => ({
+    songName: song,
+    rating: null,
+  }));
+  const fullRatings = [...ratingsList, ...remaining];
+  onFinish(fullRatings);
+}, [currentIndex, songs, ratingsList, onFinish]);
+
+useEffect(() => {
+  if (currentIndex >= songs.length) {
+    handleFinish();
+  }
+}, [currentIndex, handleFinish,songs.length]);
+
 
   return (
     <MotionWrap.FadeInUp className="rating-bg">
