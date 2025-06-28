@@ -26,6 +26,7 @@ type UserFormData = {
   userName: string;
   albumName: string;
   bandName: string;
+  songs:string[];
 };
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
   const [currentUserIndex, setCurrentUserIndex] = useState<number>(0);
   const [sharedAlbumName, setSharedAlbumName] = useState<string>('');
   const [sharedBandName, setSharedBandName] = useState<string>('');
+  const [songList, setSongList] = useState<string[]>([]); 
+
 
   const isFirstUserBeingAdded = userGroup.length === 0;
 
@@ -41,6 +44,7 @@ function App() {
     if (isFirstUserBeingAdded) {
       setSharedAlbumName(userData.albumName);
       setSharedBandName(userData.bandName);
+      setSongList(userData.songs);
     }
 
     const newEntry: UserGroupEntry = {
@@ -92,6 +96,7 @@ function App() {
           userName={userGroup[currentUserIndex].user.userName}
           albumName={sharedAlbumName}
           bandName={sharedBandName}
+          songs = {songList}
           onFinish={handleRatingsFinish}
         />
       )}
@@ -116,6 +121,7 @@ function App() {
       {step === 4 && (
         <SongComparisonTable
           userGroup={userGroup}
+          sharedSongList = {songList}
           onBack={() => setStep(3)}
         />
       )}

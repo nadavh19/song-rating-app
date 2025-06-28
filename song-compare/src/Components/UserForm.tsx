@@ -6,6 +6,7 @@ import {
   FadeInText,
   AnimatedButton
 } from './Animators/AnimatedWrappers';
+import { fetchAlbumTracks } from "../utils/fetchAlbumTracks";
 
 // === Props Type ===
 type UserFormProps = {
@@ -13,12 +14,12 @@ type UserFormProps = {
     userName: string;
     albumName: string;
     bandName: string;
+    songs: string[];
   }) => void;
   isFirstUserBeingAdded: boolean;
   sharedAlbumName: string;
   sharedBandName: string;
 };
-///////////////////////
 
 function UserForm({
   onSubmit,
@@ -29,7 +30,7 @@ function UserForm({
   const [userData, setUserData] = useState({
     userName: '',
     album: '',
-    band: ''
+    band: '',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,15 +40,37 @@ function UserForm({
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const album = isFirstUserBeingAdded ? userData.album : sharedAlbumName;
     const band = isFirstUserBeingAdded ? userData.band : sharedBandName;
 
-    onSubmit({
-      userName: userData.userName.trim(),
-      albumName: album.trim(),
-      bandName: band.trim()
-    });
+    if (isFirstUserBeingAdded) {
+      try {
+        const songs = await fetchAlbumTracks(band, album);
+
+        if (songs.length === 0) {
+          alert("Couldn't fetch songs for this album. Please check the spelling.");
+          return;
+        }
+
+        onSubmit({
+          userName: userData.userName.trim(),
+          albumName: album.trim(),
+          bandName: band.trim(),
+          songs: songs,
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong while fetching the album.");
+      }
+    } else {
+      onSubmit({
+        userName: userData.userName.trim(),
+        albumName: album.trim(),
+        bandName: band.trim(),
+        songs: [],
+      });
+    }
   };
 
   const nameFilled = userData.userName.trim() !== '';
@@ -104,13 +127,13 @@ function UserForm({
         {(isFirstUserBeingAdded
           ? nameFilled && albumFilled && bandFilled
           : nameFilled) && (
-          <AnimatedButton
-            className="btn btn-purple w-100 mt-3"
-            onClick={handleSubmit}
-          >
-            Start Rating
-          </AnimatedButton>
-        )}
+            <AnimatedButton
+              className="btn btn-purple w-100 mt-3"
+              onClick={handleSubmit}
+            >
+              Start Rating
+            </AnimatedButton>
+          )}
       </FadeInDrop>
     </div>
   );

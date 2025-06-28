@@ -30,6 +30,7 @@ type GroupResultsSummaryProps = {
   userGroup: UserGroupEntry[];
   sharedAlbumName: string;
   sharedBandName: string;
+  sharedSongList?: string[];
   onReset: () => void;
   setStep: (step: number) => void;
 };

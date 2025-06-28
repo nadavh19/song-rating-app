@@ -2,44 +2,29 @@ import React from 'react';
 import '../Styles/SongComparisonTable.css';
 import * as MotionWrap from './Animators/AnimatedWrappers';
 
-// 🧠 A single rating: song name + number or null (if skipped)
 type Rating = {
-  songName: string ;
+  songName: string;
   rating: number | null;
 };
 
-// 🧠 Each user object includes their name, album, band
 type User = {
   userName: string;
   albumName: string;
   bandName: string;
 };
 
-// 🧠 Full data per user = user + their list of ratings
 type UserGroupEntry = {
   user: User;
   ratings: Rating[];
 };
 
-// 🧠 Props the component receives
 type SongComparisonTableProps = {
   userGroup: UserGroupEntry[];
+  sharedSongList: string[]; // ✅ NEW: full song order
   onBack: () => void;
 };
 
-function SongComparisonTable({ userGroup, onBack }: SongComparisonTableProps) {
-  // Step 1: Collect all unique song names from all users
-  const allSongNames = new Set<string>();
-  userGroup.forEach(({ ratings }) => {
-    ratings.forEach(({ songName }) => {
-      if (songName && songName.trim() !== '') {
-        allSongNames.add(songName.trim());
-      }
-    });
-  });
-
-  const uniqueSongs = Array.from(allSongNames);
-
+function SongComparisonTable({ userGroup, sharedSongList, onBack }: SongComparisonTableProps) {
   return (
     <MotionWrap.FadeIn className="comparison-bg">
       <MotionWrap.FadeInScale className="comparison-card shadow p-4">
@@ -56,11 +41,11 @@ function SongComparisonTable({ userGroup, onBack }: SongComparisonTableProps) {
               </tr>
             </thead>
             <tbody>
-              {uniqueSongs.map((song, i) => (
+              {sharedSongList.map((song, i) => (
                 <tr key={i}>
                   <td>{song}</td>
                   {userGroup.map((u, j) => {
-                    const entry = u.ratings.find(r => r.songName.trim() === song);
+                    const entry = u.ratings.find(r => r.songName.trim() === song.trim());
                     return (
                       <td key={j}>
                         {entry
