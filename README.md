@@ -3,7 +3,6 @@
 This app lets a group of users rate songs from a specific album by a band.  
 It features:
 
-- 💬 Autocomplete for band and album names (via Deezer API)
 - 🎧 Multiple users rating the **same album**
 - 📊 Automatic calculation of stats (total, average, min, max)
 - 🎨 Stylish animated UI using Bootstrap + Framer Motion
